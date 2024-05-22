@@ -27,10 +27,10 @@ robomas_plugins::msg::RobomasTarget generate_robomas_target(const float data)
   return frame;
 }
 
-class MinimalPublisher : public rclcpp::Node
+class RobomasPublisher : public rclcpp::Node
 {
   public:
-    MinimalPublisher()
+    RobomasPublisher()
     : Node("robomas_node")
     {
       publisher_target1 = this->create_publisher<robomas_plugins::msg::RobomasTarget>("robomas_target", 10);
@@ -39,7 +39,7 @@ class MinimalPublisher : public rclcpp::Node
       publisher_target4 = this->create_publisher<robomas_plugins::msg::RobomasTarget>("robomas_target", 10);
       publisher_frame = this->create_publisher<robomas_plugins::msg::RobomasFrame>("robomas_can_tx", 10);
       joy_subscriber_ = this->create_subscription<sensor_msgs::msg::Joy>(
-        "joy", 10, std::bind(&MinimalPublisher::joy_callback, this, std::placeholders::_1)
+        "joy", 10, std::bind(&RobomasPublisher::joy_callback, this, std::placeholders::_1)
       );
     }
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
 
-    auto node = std::make_shared<MinimalPublisher>();
+    auto node = std::make_shared<RobomasPublisher>();
 
     rclcpp::spin(node);
 
